@@ -1721,22 +1721,22 @@ bool ReadBlockFromDisk(CBlock& block, const CBlockIndex* pindex, const Consensus
 
 CAmount GetBlockSubsidy(int nHeight, const Consensus::Params& consensusParams)
 {
-    int halvings = nHeight / consensusParams.nSubsidyHalvingInterval;
+    int halvings = nHeight / consensusParams.nSubsidyHalvingInterval; //recote de halvin- corte de recompensas de mineria
     // Force block reward to zero when right shift is undefined.
     if (halvings >= 25)
         return 0;
 
-    CAmount nSubsidy = 10 * COIN;
+    CAmount nSubsidy = 10 * COIN; //COIN = 8 decimales
 
     // 50000 primer bloque, 10 hacia adelante, variable desde el 2834 hasta el 50000, luego fijo a 10 denuevo
-    if (nHeight == 1)
+    if (nHeight == 3)
         nSubsidy = 50000 * COIN;
 
-    if (nHeight > 2834 && nHeight <= 50000) //En realidad partio desde el 2835.
-        nSubsidy = (50000/nHeight + 10) * COIN;
+    if (nHeight > 4 && nHeight <= 50000) //En realidad partio desde el 2835.
+        nSubsidy = (50000/nHeight + 10) * COIN; //calculo de recompemza por bloque
 
-    if (nHeight >= consensusParams.PMC1)
-        nSubsidy = 1.5 * COIN;
+    //if (nHeight >= consensusParams.PMC1)
+       // nSubsidy = 1.5 * COIN;
 
     // Subsidy is cut in half every 210,000 blocks which will occur approximately every 4 years.
     nSubsidy >>= halvings;
